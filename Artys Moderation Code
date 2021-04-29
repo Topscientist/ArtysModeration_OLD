@@ -1,0 +1,169 @@
+##This code is copyrighted under the UK Intellectaul property house, Attempting to re-distribute or use the code for your own purposes without permisiion from the original owner is subject to law enforcement. 
+
+##Copyright (c) Artymartin 2021
+
+
+import discord
+import os
+import random
+import requests
+import json
+from keep_alive import keep_alive
+from replit import db
+from time import sleep
+update = 'false'
+
+client = discord.Client()
+
+def get_quote():
+  [REDACTED FOR PRIVACY REASONS]
+  json_data = json.loads(response.text)
+  quote = json_data[0]['q'] + " - " + json_data[0]['a']
+  return(quote)
+
+discordnames = ("a", "A", "b", "B", "c", "C", "d", "D", "e", "E", "f", "F", "g", "G", "h", "H", "i", "I", "j", "J", "k", "K", "l", "L", "m", "M", "n", "N", "o", "O", "p", "P", "q", "Q", "r", "R", "s", "S", "t", "T", "u", "U", "v", "V", "w", "W", "x", "X", "y", "Y", "z", "z")
+
+whitelist = ("competition", "Competition")
+
+banned_words = [
+    "ahole", "Ahole", "AHOLE", "anus", "ANUS", "Anus", "ass", "ASS", "Ass", "Ass Monkey", "ASS MONLKEY", "ass monkey",
+    "Assface", "assface", "ASSFACE", "assh0le", "ASSH0LE", "Assh0le", "asshole", "Asshole", "ASSHOLE", "assholes", "Assholes", "ASSHOLES", "bassterds", "Bassterds", "BASSTERDS", "bastard", "Bastard" "BASTARD", "bastards", "Bastards", "BASTARDS",
+    "basterds", "Basterds", "BASTERDS", "bitch", "BITCH", "Bitch", "bitches", "BITCHES", "Bitches", "Blow Job", "blow job", "BLOW JOB", "c0ck", "C0ck", "C0CK", "c0cks", "C0CKS", "C0cks", "c0k", "C0K", "C0k", "cock", "COCK", "Cock",
+    "cockhead", "COCKHEAD", "Cockhead", "cock-head", "COCK-HEAD", "Cock-head", "Cock-Head", "cocks", "COCKS", "Cocks", "CockSucker", "cocksucker", "COCKSUCKER", "Cocksucker", "cock-sucker", "COCK-SUCKER", "Cock-Sucker", "Cock-sucker", "crap", "Crap", "CRAP",
+    "cum", "Cum", "CUM", "dick", "DICK", "Dick", "f u c k", "F U C K", "F u c k", "f u c k e r", "F U C K E R", "F u c k e r", "fuck", "FUCK", "Fuck", "fucker", "Fucker", "FUCKER", "fuckin", "Fuckin", "FUCKIN",
+    "fucking", "Fucking", "FUCKING", "fucks", "Fucks", "FUCKS", "fuk", "Fuk", "FUK", "Fukah", "fukah", "FUKAH", "fuker", "Fuker", "FUKER",
+    "Fukin", "FUKIN", "Fukk", "fukk", "FUKK", "Fukkah", "fukkah", "FUKKAH", "Fukken", "fukken", "FUKKEN", "Fukker", "fukker", "FUKKER", "Fukkin", "kukkin", "FUKKIN",
+    "h0ar", "H0ar", "H0AR", "h0re", "H0re", "H0RE",  "Lipshits", "lipshits", "LIPSHITSS", "Lipshitz", "lipshitz", "LIPSHITZ", "massterbait", "Massterbait", "MASSTERBAITER", "masstrbate", "Masstrbate", "MASSTRBATE", "masterbaiter", "Masterbaiter", "MASTERBAITER",
+    "masterbate", "Masterbate", "MASTERBATE", "masterbates", "Masterbates", "MASTERBATES", "Motha Fucker", "MOTHA FUCKER", "motha fucker", "Motha Fuker", "motha fuker", "Motha Fukkah", "motha fukkah",
+    "Motha Fukker", "motha fukker", "Mother Fukah", "mother fukah", "Mother Fuker", "mother fuker",
+    "Mother Fukkah", "mother fukkah", "Mother Fukker", "mother fukker", "mother-fucker", "Mother-Fucker", "Mutha Fucker", "mutha fucker",
+    "Mutha Fukah", "mutha fukah", "Mutha Fuker", "mutha fuker", "Mutha Fukkah", "mutha fukkah", "Mutha Fukker", "mutha fukker", "n1gr" "N1GR", "N1gr", "nigger", "Nigger", "NIGGER", "nigur", "Nigur", "NIGUR", "niiger", "Niiger", "NIIGER", "niigr", "Niigr", "peeenus", "Peeenus", "PEEENUS", "peeenusss", "Peeenusss", "PEEENUSSS",
+    "peenus", "Peenus", "PEENUS", "peinus", "Peinus", "PEINUS", "pen1s",  "Pen1s", "PEN1S", "penas", "Penas", "PENAS", "penis", "Penis", "PENIS", "penus", "Penus", "PENUS",
+    "penuus", "Penuus", "PENUUS", "Phuc", "phuc", "PHUC", "Phuck", "phuck", "PHUCK", "Phuk", "phuk", "PHUK", "Phuker", "phuker", "PHUKER", "Phukker", "phukker", "PHUKKER", "pusse", "Pusse", "PUSSE", "pussee", "Pussee", "pussy", "Pussy", "PUSSY", "recktum", "Recktum", "RECKTUM", "rectum", "Rectum", "RECTUM", "retard", "Retard", "RETARD",
+    "semen", "Semen", "SEMEN", "sex", "Sex", "SEX", "sexy", "Sexy", "SEXY", "Sh!t", "sh!t", "SH1T", "sh1t", "Sh1t", "SH1T", "sh1ter", "Sh1ter", "SH1TER", "sh1ts", "Sh1ts", "SH1TS", "sh1tter", "Sh1tter",  "SH1TTER", "shit", "Shit", "SHIT", "shits", "Shits", "SHITS", "shitter", "Shitter", "SHITTER", "Shitty", "shitty", "SHITTY", "Shity", "shity", "SHITY",
+    "son-of-a-bitch", "SON-OF-A-BITCH", "Son of a bitch", "Son Of A Bitch", "SON OF A BITCH", "son of a bitch", "Son-of-a-bitch", "Son-Of-A-Bitch", "tit", "Tit", "TIT", "turd", "Turd", "TURD", "vag1na", "Vag1na", "VAG1NA", "vagiina", "Vagiina", "VAGIINA", "vagina", "Vagina", "VAGINA",
+    "vaj1na", "Vag1na", "VAG1NA", "vajina", "Vajina", "VAJINA", "vullva", "Vullva", "VALLVA", "vulva", "Vulva", "VULVA", "wh00r", "Wh00r", "WH00R", "wh0re", "Wh0re", "WGO0RE", "whore", "Whore", "WHORE", "b!+ch", "B!+ch", "B!+CH", "bitch", "Bitch", "BITCH", "fuck", "Fuck", "FUCK",
+    "shit", "Shit", "SHIT", "ass", "Ass", "ASS", "asshole", "Asshole", "ASSHOLE", "b1tch", "B1tch", "B1TCH", "bastard", "Bastard", "BASTARD", "bi+ch", "Bi+ch", "BI+CH", "c0ck", "C0ck", "C0CK", "cawk", "Cawk", "CAWK", "cock", "Cock", "COCK",
+    "cum", "Cum", "CUM", "cunt", "Cunt", "CUNT", "ejakulate", "Ejakulate", "EJAKULATE", "fatass", "Fatass", "FATASS", "fcuk", "Fcuk", "FCUK", "fuk", "Fuk", "FUK", "kawk", "Kawk", "KAWK", "masturbate", "Masturbate", "MASTURBATE",
+    "masterbat*", "Masterbat*", "MASTERBAT*", "masterbat3", "Masterbat3", "MASTERBAT3", "motherfucker", "Motherfucker", "MOTHERFUCKER",
+    "nigga", "Nigga", "NIGGA", "nigger", "Nigger", "NIGGER", "nutsack", "Nutscack", "MUTSACK", 
+    "pusse", "Pusse", "PUSSE", "pussy", "Pussy", "PUSSY",
+    "scrotum", "Scrotum", "SCROTUM", "sh!t", "Sh!t", "SH!T", "shi+", "Shi+", "SHI+", "sh!+", "Sh!+", "SH1+",
+    "tits", "Tits", "TITS", "boobs", "Boobs", "BOOBS", "b00bs", "B00bs", "B00BS", "testical", "Testical", "TESTICAL", "testicle", "Testicle", "titt", "Titt", "TITT", "w00se", "W00se", "W00SE",
+    "jackoff", "Jackoff", "JACKOFF," "*fuck*", "*Fuck*", "*FUCK*", "*shit*", "*Shit*", "*SHIT*",
+    "@$$", "arse*", "ARSE*", "Arse*", "assrammer", "Assrammer", "ASSRAMMER", "bi7ch", "Bi7ch", "BI7CH",
+    "bitch*", "Bitch*", "BITCH*", "bollock*", "Bollock*", "BOLLOCK*", "breasts", "Breasts", "BREASTS", "Cock*", "Cock*", "COCK*", "dick*", "DICK*", "ejackulate", "Ejackulate", "EJACKULATE", "foreskin", "Foreskin", "FORESKIN", "fuk*", "Fuk*", "FUK*", "h0r", "H0r", "H0R", "kanker*", "KANKER*" "Janker*", "JANKER*", "nigger*", "NIGGER*" "Niggr*", "NIGGR*", "paska*", "Paska*", "PASKA*", "perse", "Perse", "PERSE", "picka" "PICKA", "Picka", "piss*", "PISS*" "Piss*", "poontsee", "Poontsee", "POONTSEE", "porn", "Porn", "PORN", "p0rn", "P0rn", "P0RN", "pr0n", "PR0N", "Pr0n", "schaffer", "Schaffer", "SCHAFFER",
+    "sh!t*", "Sh!t*", "SH!T*", "sharmuta", "Sharmuta", "SHARMUTA", "sharmute", "Sharmute", "SHARMUTE", "shipal", "Shipal", "SHIPAL", "suka", "Suka", "SUKA", "b00b*", "B00b*", "B00B*", "testicle*", "Testicle*", "TESTICLE*",
+    "titt*", "Titt*", "TITT*", "twat", "Twat", "TWAT", "wank*", "Wank*", "WANK*", "wichser", "Wichser",  "WINCHER", "wop*", "Wop*", "WOP*",
+    "free nitro", "Free Nitro", "FREE NITRO", "Free Discord Nitro", "FREE DISCORD NITRO", "free discord nitro", "Free discord nitro"
+]
+
+cookie_list = ["Congrats! You have won a cookie! 🍪", "No, No cookie for you!"]
+
+sad_words = ["unhappy", "depressed", "angry", "miserable", "depressing"]
+
+starter_encouragements = [
+    "Cheer Up! Life will be ok", "Don't Worry, Be happy!",
+    "Every little thing is going to be alright!", "Hang In There!",
+    "Whatever life throws at you, You will be stonger!"
+]
+
+@client.event
+async def on_ready():
+    print('We have logged in {0.user}'.format(client))
+    await client.change_presence(activity=discord.Game(name=f"Never Gonna Give You Up! | Helping Out On {len(client.guilds)} servers | arty help"))
+        
+  
+@client.event
+async def on_message(message):
+    if message.author == client.user:
+        return
+      
+    msg = message.content
+   
+    if any(word in msg for word in banned_words):
+      if message.content.startswith(whitelist):
+        return
+      else:
+        await message.channel.purge(limit=1)
+        embed = discord.Embed(
+            title='🤚Hold Up!🤚',
+            description=
+            'I do beg your pardon sir but that word is **BANNED**. Continuing to say it will result in a mute.',
+            color=discord.Colour.orange())
+        await message.channel.send(embed=embed)
+        print('Automoderator> Banned word was deleted')
+        sleep (3)
+
+    if any(word in msg for word in sad_words):
+      await message.channel.send(random.choice(starter_encouragements))
+
+    elif msg.startswith('arty admin auth Discord Bots early accsess'):
+      await message.channel.send ('❌ This command is restricted to admin users (Bot Devs)')
+      print ('Sudo> Failed to auth a discord, Non admin user')
+
+    elif msg.startswith('arty config'):
+      embed = discord.Embed(
+          title='⚙️ Bot Settings BETA ⚙️',
+          description=
+          '**arty enable/disable cheer up** _Cheer up is a chat feature which looks for sad words in peoples messages then send them a message of encurouragment. [Enabled By Defult]_')
+      await message.channel.send(embed=embed)
+      print('Command> config executed')
+
+    elif msg.startswith('arty disable cheer up'):
+      await message.channel.send('This feature is still being worked on!')
+    elif msg.startswith('arty enable cheer up'):
+      await message.channel.send('This feature is still being worked on!')
+
+    elif msg.startswith('arty cookie'):
+        await message.channel.send(random.choice(cookie_list))
+        print('Command> $cookie has bee executed')
+
+    elif msg.startswith('arty help'):
+        embed = discord.Embed(
+            title='Command List',
+            description=
+            'arty info ***Bot Info***, arty discord ***Join Our Discord***, arty status ***Bot Status***, arty cookie ***A cookie command***, arty inspire ***An Inpire Command*** ~~arty config~~ _Command Coming Soon!_',
+            color=discord.Colour.purple())
+        await message.channel.send(embed=embed)
+        print('Command> $help command has been executed')
+
+    elif msg.startswith('arty info'):
+        embed = discord.Embed(
+            title='Bot Info',
+            description=
+            "**Welcome To Artys Moderation!** A bot that is fully automated with no pior setup! The idea of Artys Moderation is to help your mod bot with moderating and to help cheer people up when they are feeling down. So, you know how nower days a lot of discord servers have widley used mod bots and while this can be good it means that sometimes these bots can be a bit slow at doing their job, And thats where Artys Moderation comes into play! Because of my light code-base and good hosting I can get down on those bad words and keep your chat clean and fresh, I also have a feature called cheer up! The premise of this feature is to detect when a user is feeling sad and send them a message of encourgement! I am always adding new features and listning to feedback so if you have any suggestions then please do leave them in my discord, I would love to hear them!",
+            color=discord.Colour.blue())
+        await message.channel.send(embed=embed)
+        print('Command> $info has been executed')
+        
+    elif msg.startswith('arty support us'):
+      embed = discord.Embed(
+            title='Support Us!',
+            description=
+            '**Welcome To How To Support Us!** As you may have noticed here at Artys Moderation (or the bot that you are using right now) we have no premium version of the bot nor anything locked behind a paywall. And that is because we would like to offer the full capabilites of our bot to as many people as possible. Artys Moderation is sort of a hobby project while also being our passion. So if you would like to donate to help support us to get better hosting, help improve our bot or just give us a little push then just donate at our patreon below. Any donations are taken to heart and a thank-you in advance.',
+            color=discord.Colour.gold())
+      await message.channel.send(embed=embed)
+      print('Command> $support us has been executed')
+
+    elif msg.startswith('arty status'):
+        embed = discord.Embed(
+            title='Bot Status',
+            description=
+            '**Bot Online - Host Switching** Bot is online in all discord servers. However we are expected to be switching to a VPS over the next few weeks. To get more info please join our discord. There is no expected downtime during the switch. To get real-time updates please check our status page at the following link; https://stats.uptimerobot.com/rVzDJuAZkN/787787175',
+            color=discord.Colour.green())
+        await message.channel.send(embed=embed)
+        print('Command> $status has been executed')
+
+    elif msg.startswith('arty discord'):
+      await message.channel.send('Got A Bug To Report? Feature To Suggest? Here is the invite to our discord; https://discord.gg/5y9tDDBkBW')
+      print ('Command> $discord has been executed')
+    
+    elif msg.startswith('arty inspire'):
+      quote = get_quote()
+      await message.channel.send(quote)
+      print ('Command> arty inspire has been executed')
+
+
+keep_alive()
+client.run(os.getenv('TOKEN'))
