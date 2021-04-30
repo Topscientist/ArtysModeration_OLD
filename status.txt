@@ -1,0 +1,10 @@
+Bot Status:
+
+Current Status: Online
+
+Previous Downtine:
+Down Last Week for - Updating Packages, A package update was required but the wrong package was requested reulting in a system-wide crash. 
+                     The bot was offline for 2 mins.
+                     
+Expected Downtimes:
+While switching to a VPS some downtime is expected in some discords hwever the moderation system will continue to work.
