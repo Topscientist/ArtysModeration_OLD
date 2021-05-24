@@ -56,7 +56,7 @@ banned_words = [
     "bitch*", "Bitch*", "BITCH*", "bollock*", "Bollock*", "BOLLOCK*", "breasts", "Breasts", "BREASTS", "Cock*", "Cock*", "COCK*", "dick*", "DICK*", "ejackulate", "Ejackulate", "EJACKULATE", "foreskin", "Foreskin", "FORESKIN", "fuk*", "Fuk*", "FUK*", "h0r", "H0r", "H0R", "kanker*", "KANKER*" "Janker*", "JANKER*", "nigger*", "NIGGER*" "Niggr*", "NIGGR*", "paska*", "Paska*", "PASKA*", "perse", "Perse", "PERSE", "picka" "PICKA", "Picka", "piss*", "PISS*" "Piss*", "poontsee", "Poontsee", "POONTSEE", "porn", "Porn", "PORN", "p0rn", "P0rn", "P0RN", "pr0n", "PR0N", "Pr0n", "schaffer", "Schaffer", "SCHAFFER",
     "sh!t*", "Sh!t*", "SH!T*", "sharmuta", "Sharmuta", "SHARMUTA", "sharmute", "Sharmute", "SHARMUTE", "shipal", "Shipal", "SHIPAL", "suka", "Suka", "SUKA", "b00b*", "B00b*", "B00B*", "testicle*", "Testicle*", "TESTICLE*",
     "titt*", "Titt*", "TITT*", "twat", "Twat", "TWAT", "wank*", "Wank*", "WANK*", "wichser", "Wichser",  "WINCHER", "wop*", "Wop*", "WOP*",
-    "free nitro", "Free Nitro", "FREE NITRO", "Free Discord Nitro", "FREE DISCORD NITRO", "free discord nitro", "Free discord nitro"
+    "free nitro", "Free Nitro", "FREE NITRO", "Free Discord Nitro", "FREE DISCORD NITRO", "free discord nitro", "Free discord nitro", "p3n1s", "P3n1s, "p3n1S", "P3N1S", "P3n1S", "p3N1s"
 ]
 
 cookie_list = ["Congrats! You have won a cookie! 🍪", "No, No cookie for you!"]
