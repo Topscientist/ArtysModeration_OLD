@@ -1,6 +1,5 @@
-##This code is copyrighted under the UK Intellectaul property house, Attempting to re-distribute or use the code for your own purposes without permisiion from the original owner is subject to law enforcement. 
-
-##Copyright (c) Artymartin 2021
+##This code is open source, plesea refer to readme.md for contributing and copying guidelines
+##Copyright (c) Artymartin3459#9245 2021
 
 
 import discord
@@ -16,17 +15,19 @@ update = 'false'
 client = discord.Client()
 
 def get_quote():
-  [REDACTED FOR PRIVACY REASONS]
+  response = requests.get("https://zenquotes.io/api/random")
   json_data = json.loads(response.text)
   quote = json_data[0]['q'] + " - " + json_data[0]['a']
   return(quote)
 
-discordnames = ("a", "A", "b", "B", "c", "C", "d", "D", "e", "E", "f", "F", "g", "G", "h", "H", "i", "I", "j", "J", "k", "K", "l", "L", "m", "M", "n", "N", "o", "O", "p", "P", "q", "Q", "r", "R", "s", "S", "t", "T", "u", "U", "v", "V", "w", "W", "x", "X", "y", "Y", "z", "z")
+whitelist = ("competition", "Competition", "passed", "Passed", "glass", "Glass", "GLASS", "Assign", "assign", "ASSIGN")
 
-whitelist = ("competition", "Competition")
+report_required = [
+  "@"
+]
 
 banned_words = [
-    "ahole", "Ahole", "AHOLE", "anus", "ANUS", "Anus", "ass", "ASS", "Ass", "Ass Monkey", "ASS MONLKEY", "ass monkey",
+    "ahole", "Ahole", "AHOLE", "anus", "ANUS", "Anus", "ass", "ASS", "Ass", "Ass Monkey", "ASS MONLKEY", "ass monkey", "f.uck",
     "Assface", "assface", "ASSFACE", "assh0le", "ASSH0LE", "Assh0le", "asshole", "Asshole", "ASSHOLE", "assholes", "Assholes", "ASSHOLES", "bassterds", "Bassterds", "BASSTERDS", "bastard", "Bastard" "BASTARD", "bastards", "Bastards", "BASTARDS",
     "basterds", "Basterds", "BASTERDS", "bitch", "BITCH", "Bitch", "bitches", "BITCHES", "Bitches", "Blow Job", "blow job", "BLOW JOB", "c0ck", "C0ck", "C0CK", "c0cks", "C0CKS", "C0cks", "c0k", "C0K", "C0k", "cock", "COCK", "Cock",
     "cockhead", "COCKHEAD", "Cockhead", "cock-head", "COCK-HEAD", "Cock-head", "Cock-Head", "cocks", "COCKS", "Cocks", "CockSucker", "cocksucker", "COCKSUCKER", "Cocksucker", "cock-sucker", "COCK-SUCKER", "Cock-Sucker", "Cock-sucker", "crap", "Crap", "CRAP",
@@ -68,6 +69,7 @@ starter_encouragements = [
     "Whatever life throws at you, You will be stonger!"
 ]
 
+
 @client.event
 async def on_ready():
     print('We have logged in {0.user}'.format(client))
@@ -82,9 +84,11 @@ async def on_message(message):
     msg = message.content
    
     if any(word in msg for word in banned_words):
-      if message.content.startswith(whitelist):
+      if any(word in msg for word in whitelist):
         return
       else:
+        emoji = '⚠️'
+        await message.add_reaction(emoji)
         await message.channel.purge(limit=1)
         embed = discord.Embed(
             title='🤚Hold Up!🤚',
@@ -93,14 +97,13 @@ async def on_message(message):
             color=discord.Colour.orange())
         await message.channel.send(embed=embed)
         print('Automoderator> Banned word was deleted')
-        sleep (3)
 
     if any(word in msg for word in sad_words):
       await message.channel.send(random.choice(starter_encouragements))
 
-    elif msg.startswith('arty admin auth Discord Bots early accsess'):
-      await message.channel.send ('❌ This command is restricted to admin users (Bot Devs)')
-      print ('Sudo> Failed to auth a discord, Non admin user')
+    elif msg.startswith('arty github'):
+      await message.channel.send ('Want To Know How Our Bot Works? Here is the link to our github page! https://github.com/Topscientist/ArtysModertion')
+      print ('External> GitHub has been viewed')
 
     elif msg.startswith('arty config'):
       embed = discord.Embed(
@@ -123,7 +126,7 @@ async def on_message(message):
         embed = discord.Embed(
             title='Command List',
             description=
-            'arty info ***Bot Info***, arty discord ***Join Our Discord***, arty status ***Bot Status***, arty cookie ***A cookie command***, arty inspire ***An Inpire Command*** ~~arty config~~ _Command Coming Soon!_',
+            'arty info ***Bot Info***, arty discord ***Join Our Discord***, arty status ***Bot Status***, arty cookie ***A cookie command***, arty inspire ***An Inpire Command***, arty github ***The GitHub page for artys moderation*** arty report help **Help on how to use the report command!** ~~arty config~~ _Command Coming Soon!_',
             color=discord.Colour.purple())
         await message.channel.send(embed=embed)
         print('Command> $help command has been executed')
@@ -150,7 +153,7 @@ async def on_message(message):
         embed = discord.Embed(
             title='Bot Status',
             description=
-            '**Bot Online - Host Switching** Bot is online in all discord servers. However we are expected to be switching to a VPS over the next few weeks. To get more info please join our discord. There is no expected downtime during the switch. To get real-time updates please check our status page at the following link; https://stats.uptimerobot.com/rVzDJuAZkN/787787175',
+            '**Bot Online** Bot is online in all discord servers. To get more info or real-time updates please join pur disvord or check our status page at the following link; https://stats.uptimerobot.com/rVzDJuAZkN/787787175',
             color=discord.Colour.green())
         await message.channel.send(embed=embed)
         print('Command> $status has been executed')
@@ -164,6 +167,41 @@ async def on_message(message):
       await message.channel.send(quote)
       print ('Command> arty inspire has been executed')
 
+    elif msg.startswith('arty report help'):
+      emoji = '🔄'
+      await message.add_reaction(emoji)
+      await message.channel.send('**Report Help**')
+      await message.channel.send('If you need to report something please type;')
+      await message.channel.send('arty r [@USERNAME] [REASON]')
+      await message.channel.send('The report will then be procesessed and the role @Modertors mentioned.')
+      await message.channel.send('_Server Owners:_ If you are a server owner and are using our report command we reccomend having the (@)Moderator role so that reports are more effective.')
+    
+    elif msg.startswith('arty r'):
+      report= message.content
+      author = message.author.mention
+      if any(word in msg for word in report_required):
+        emoji = '🔄'
+        await message.add_reaction(emoji)
+        embed = discord.Embed(
+              title='Report!',
+              description=
+              report,
+              color=discord.Colour.orange())
+        await message.channel.send(embed=embed)
+        embed = discord.Embed(
+              description=' _Report Submitted By: %s_ ' %author,)
+        await message.channel.send(embed=embed)
+        await message.channel.send('A new report is avaible @Moderators')
+        emoji = '✅'
+        await message.add_reaction(emoji)
+      else:
+        emoji = '❌'
+        await message.add_reaction(emoji)
+        embed = discord.Embed(
+              title='Error',
+              description='You need to @mention a valid user in your report',
+              color=discord.Colour.red())
+        await message.channel.send(embed=embed)
 
 keep_alive()
 client.run(os.getenv('TOKEN'))
