@@ -60,7 +60,7 @@ banned_words = [
 
 cookie_list = ["Congrats! You have won a cookie! 🍪", "No, No cookie for you!"]
 
-sad_words = ["unhappy", "depressed", "angry", "miserable", "depressing", "angry", "Angry"]
+sad_words = ["unhappy", "Unhappy", "depressed", "Depressed", "angry", "Angry", "miserable", "Miserable", "depressing", "Depressing"]
 
 starter_encouragements = [
     "Cheer Up! Life will be ok", "Don't Worry, Be happy!",
