@@ -109,16 +109,24 @@ async def on_message(message):
 
     elif msg.startswith('arty config'):
       embed = discord.Embed(
-          title='⚙️ Bot Settings BETA ⚙️',
+          title='⚙️ Bot Settings ⚙️',
           description=
           '**arty enable/disable cheer up** _Cheer up is a chat feature which looks for sad words in peoples messages then send them a message of encurouragment. [Enabled By Defult]_')
       await message.channel.send(embed=embed)
       print('Command> config executed')
 
-    elif msg.startswith('arty disable cheer up'):
-      await message.channel.send('This feature is still being worked on!')
-    elif msg.startswith('arty enable cheer up'):
-      await message.channel.send('This feature is still being worked on!')
+    elif msg.startswith('arty cheer up false'):
+      guild_id = message.guild.name
+      await message.channel.send('🔁')
+      db[guild_id] = guild_id
+      await message.channel.purge(limit=1)
+      await message.channel.send('✅ Succsessfully Disabled Cheer Up In This Guild!')
+    elif msg.startswith('arty cheer up true'):
+      guild_id = message.guild.name
+      await message.channel.send('🔁')
+      del db[guild_id]
+      await message.channel.purge(limit=1)
+      await message.channel.send('✅ Succsessfully Enabled Cheer Up In This Guild!')
 
     elif msg.startswith('arty cookie'):
         await message.channel.send(random.choice(cookie_list))
