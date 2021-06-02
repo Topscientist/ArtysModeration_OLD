@@ -241,7 +241,6 @@ async def on_message(message):
         embed = discord.Embed(
               description=' _Report Submitted By: %s_ ' %author,)
         await message.channel.send(embed=embed)
-        await message.channel.send('A new report is avaible @Moderators')
         emoji = '✅'
         await message.add_reaction(emoji)
       else:
