@@ -98,10 +98,14 @@ async def on_message(message):
         print('Automoderator> Banned word was deleted')
 
     if any(word in msg for word in sad_words):
-      if message.author.bot:
+      name = message.guild.name
+      if name in db:
         return
       else:
-        await message.channel.send(random.choice(starter_encouragements))
+        if message.author.bot:
+          return
+        else:
+          await message.channel.send(random.choice(starter_encouragements))
 
     elif msg.startswith('arty github'):
       await message.channel.send ('Want To Know How Our Bot Works? Here is the link to our github page! https://github.com/Topscientist/ArtysModertion')
