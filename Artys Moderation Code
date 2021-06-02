@@ -98,7 +98,7 @@ async def on_message(message):
         print('Automoderator> Banned word was deleted')
 
     if any(word in msg for word in sad_words):
-      if message.author == discord.Member.bot:
+      if message.author.bot:
         return
       else:
         await message.channel.send(random.choice(starter_encouragements))
