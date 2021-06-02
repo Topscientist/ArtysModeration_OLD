@@ -1,5 +1,6 @@
-##This code is open source, please refer to readme.md for contributing and magpying guidelines
-##Copyright (c) Artymartin3459#9245 2021
+##This code is copyrighted under the UK Intellectaul property house, Attempting to re-distribute or use the code for your own purposes without permisiion from the original owner is subject to law enforcement. 
+
+##Copyright (c) Artymartin 2021
 
 
 import discord
@@ -8,7 +9,7 @@ import random
 import requests
 import json
 from keep_alive import keep_alive
-from time import sleep
+from replit import db
 update = 'false'
 
 client = discord.Client()
@@ -18,6 +19,8 @@ def get_quote():
   json_data = json.loads(response.text)
   quote = json_data[0]['q'] + " - " + json_data[0]['a']
   return(quote)
+
+discordnames = ("a", "A", "b", "B", "c", "C", "d", "D", "e", "E", "f", "F", "g", "G", "h", "H", "i", "I", "j", "J", "k", "K", "l", "L", "m", "M", "n", "N", "o", "O", "p", "P", "q", "Q", "r", "R", "s", "S", "t", "T", "u", "U", "v", "V", "w", "W", "x", "X", "y", "Y", "z", "z")
 
 whitelist = ("competition", "Competition", "passed", "Passed", "glass", "Glass", "GLASS", "Assign", "assign", "ASSIGN")
 
@@ -55,7 +58,7 @@ banned_words = [
     "bitch*", "Bitch*", "BITCH*", "bollock*", "Bollock*", "BOLLOCK*", "breasts", "Breasts", "BREASTS", "Cock*", "Cock*", "COCK*", "dick*", "DICK*", "ejackulate", "Ejackulate", "EJACKULATE", "foreskin", "Foreskin", "FORESKIN", "fuk*", "Fuk*", "FUK*", "h0r", "H0r", "H0R", "kanker*", "KANKER*" "Janker*", "JANKER*", "nigger*", "NIGGER*" "Niggr*", "NIGGR*", "paska*", "Paska*", "PASKA*", "perse", "Perse", "PERSE", "picka" "PICKA", "Picka", "piss*", "PISS*" "Piss*", "poontsee", "Poontsee", "POONTSEE", "porn", "Porn", "PORN", "p0rn", "P0rn", "P0RN", "pr0n", "PR0N", "Pr0n", "schaffer", "Schaffer", "SCHAFFER",
     "sh!t*", "Sh!t*", "SH!T*", "sharmuta", "Sharmuta", "SHARMUTA", "sharmute", "Sharmute", "SHARMUTE", "shipal", "Shipal", "SHIPAL", "suka", "Suka", "SUKA", "b00b*", "B00b*", "B00B*", "testicle*", "Testicle*", "TESTICLE*",
     "titt*", "Titt*", "TITT*", "twat", "Twat", "TWAT", "wank*", "Wank*", "WANK*", "wichser", "Wichser",  "WINCHER", "wop*", "Wop*", "WOP*",
-    "free nitro", "Free Nitro", "FREE NITRO", "Free Discord Nitro", "FREE DISCORD NITRO", "free discord nitro", "Free discord nitro", "p3n1s", "P3n1s, "p3n1S", "P3N1S", "P3n1S", "p3N1s"
+    "free nitro", "Free Nitro", "FREE NITRO", "Free Discord Nitro", "FREE DISCORD NITRO", "free discord nitro", "Free discord nitro", "p3n1s", "P3n1s", "p3n1S", "P3N1S", "p3N1s", "p3N1S"
 ]
 
 cookie_list = ["Congrats! You have won a cookie! 🍪", "No, No cookie for you!"]
@@ -86,16 +89,20 @@ async def on_message(message):
       if any(word in msg for word in whitelist):
         return
       else:
-        emoji = '⚠️'
-        await message.add_reaction(emoji)
-        await message.channel.purge(limit=1)
-        embed = discord.Embed(
-            title='🤚Hold Up!🤚',
-            description=
-            'I do beg your pardon sir but that word is **BANNED**. Continuing to say it will result in a mute.',
-            color=discord.Colour.orange())
-        await message.channel.send(embed=embed)
-        print('Automoderator> Banned word was deleted')
+        abc = message.guild.id
+        if str(abc) in db:
+          return
+        else:
+          emoji = '⚠️'
+          await message.add_reaction(emoji)
+          await message.channel.purge(limit=1)
+          embed = discord.Embed(
+              title='🤚Hold Up!🤚',
+              description=
+                'I do beg your pardon, but that word is **BANNED**. To disable moderation features please type; arty mod flase',
+              color=discord.Colour.orange())
+          await message.channel.send(embed=embed)
+          print('Automoderator> Banned word was deleted')
 
     if any(word in msg for word in sad_words):
       name = message.guild.name
@@ -112,38 +119,78 @@ async def on_message(message):
       print ('External> GitHub has been viewed')
 
     elif msg.startswith('arty config'):
+      name = message.guild.name
       embed = discord.Embed(
-          title='⚙️ Bot Settings ⚙️',
+        title='⚙️ Bot Settings ⚙️',
           description=
-          '**arty enable/disable cheer up** _Cheer up is a chat feature which looks for sad words in peoples messages then send them a message of encurouragment. [Enabled By Defult]_')
+          '**arty cheer up true/false** _Cheer up is a chat feature which looks for sad words in peoples messages then send them a message of encurouragment. [Enabled By Defult]_')
+      await message.channel.send(embed=embed)
+      embed = discord.Embed(
+          description=
+          '**arty mod true/false** _Moderation is a chat feature that identifies and removes all swear and NSWF words. [Enabled By Defult]_')
       await message.channel.send(embed=embed)
       print('Command> config executed')
 
     elif msg.startswith('arty cheer up false'):
       guild_id = message.guild.name
       await message.channel.send('🔁')
-      db[guild_id] = guild_id
-      await message.channel.purge(limit=1)
-      await message.channel.send('✅ Succsessfully Disabled Cheer Up In This Guild!')
+      if guild_id in db:
+        await message.channel.purge(limit=1)
+        await message.channel.send('❌ Failed To Run Command: Cheer Up is already disabled in this guild')
+      else:
+        db[guild_id] = guild_id
+        await message.channel.purge(limit=1)
+        await message.channel.send('✅ Succsessfully Disabled Cheer Up In This Guild!')
     elif msg.startswith('arty cheer up true'):
       guild_id = message.guild.name
       await message.channel.send('🔁')
-      del db[guild_id]
-      await message.channel.purge(limit=1)
-      await message.channel.send('✅ Succsessfully Enabled Cheer Up In This Guild!')
+      if guild_id in db:
+        del db[guild_id]
+        await message.channel.purge(limit=1)
+        await message.channel.send('✅ Succsessfully Enabled Cheer Up In This Guild!')
+      else:
+        await message.channel.purge(limit=1)
+        await message.channel.send('❌ Failed To Run Command: Cheer Up is alreday enabled in this guild')
+
+    elif msg.startswith('arty mod false'):
+      name = message.guild.id
+      await message.channel.send('🔁')
+      if str(name) in db:
+        await message.channel.purge(limit=1)
+        await message.channel.send('❌ Failed To Run Command: Moderation is already disabled in this guild')
+      else:
+        db[name] = "True"
+        await message.channel.purge(limit=1)
+        await message.channel.send('✅ Succsessfully Disabled Moderation In This Guild!')
+    elif msg.startswith('arty mod true'):
+      name = message.guild.id
+      await message.channel.send('🔁')
+      if str(name) in db:
+        del db[str(name)]
+        await message.channel.purge(limit=1)
+        await message.channel.send('✅ Succsessfully Enabled Moderation In This Guild!')
+      else:
+        await message.channel.purge(limit=1)
+        await message.channel.send('❌ Failed To Run Command: Moderation is alreday enabled in this guild')
 
     elif msg.startswith('arty cookie'):
         await message.channel.send(random.choice(cookie_list))
         print('Command> $cookie has bee executed')
 
     elif msg.startswith('arty help'):
-        embed = discord.Embed(
-            title='Command List',
-            description=
-            'arty info ***Bot Info***, arty discord ***Join Our Discord***, arty status ***Bot Status***, arty cookie ***A cookie command***, arty inspire ***An Inpire Command***, arty github ***The GitHub page for artys moderation*** arty report help **Help on how to use the report command!** ~~arty config~~ _Command Coming Soon!_',
-            color=discord.Colour.purple())
-        await message.channel.send(embed=embed)
-        print('Command> $help command has been executed')
+      embed = discord.Embed(title="Command List:", colour=discord.Colour(0x9b59b6))
+
+      embed.add_field(name=f"ℹ️ Bot Info:", value="arty info", inline=False)
+      embed.add_field(name=f"✉️ Join Our Discord:", value="arty discord", inline=False)
+      embed.add_field(name=f"🚦Bot Status:", value="arty status", inline=False)
+      embed.add_field(name=f"🍪 A cookie command:", value="arty cookie",inline=False)
+      embed.add_field(name=f"💭 An Inpire Command:", value="arty inspire",inline=False)
+      embed.add_field(name=f"🌐 The GitHub page for Artys Moderation!:",value="arty github",inline=False)
+      embed.add_field(name=f"📮 Help on how to use the report command!:",value="arty report help",inline=False)
+      embed.add_field(name=f"⚙️ Bot Config Page!:",value="arty config",inline=False)
+
+      await message.channel.send(embed=embed)
+      print ('Command> arty help has been executed')
 
     elif msg.startswith('arty info'):
         embed = discord.Embed(
@@ -153,15 +200,6 @@ async def on_message(message):
             color=discord.Colour.blue())
         await message.channel.send(embed=embed)
         print('Command> $info has been executed')
-        
-    elif msg.startswith('arty support us'):
-      embed = discord.Embed(
-            title='Support Us!',
-            description=
-            '**Welcome To How To Support Us!** As you may have noticed here at Artys Moderation (or the bot that you are using right now) we have no premium version of the bot nor anything locked behind a paywall. And that is because we would like to offer the full capabilites of our bot to as many people as possible. Artys Moderation is sort of a hobby project while also being our passion. So if you would like to donate to help support us to get better hosting, help improve our bot or just give us a little push then just donate at our patreon below. Any donations are taken to heart and a thank-you in advance.',
-            color=discord.Colour.gold())
-      await message.channel.send(embed=embed)
-      print('Command> $support us has been executed')
 
     elif msg.startswith('arty status'):
         embed = discord.Embed(
@@ -182,13 +220,11 @@ async def on_message(message):
       print ('Command> arty inspire has been executed')
 
     elif msg.startswith('arty report help'):
-      emoji = '🔄'
-      await message.add_reaction(emoji)
       await message.channel.send('**Report Help**')
       await message.channel.send('If you need to report something please type;')
       await message.channel.send('arty r [@USERNAME] [REASON]')
       await message.channel.send('The report will then be procesessed and the role @Modertors mentioned.')
-      await message.channel.send('_Server Owners:_ If you are a server owner and are using our report command we reccomend having the (@)Moderator role so that reports are more effective.')
+      await message.channel.send('_Note:_ Make sure to allow me add emojis/reactions for the report to go through!')
     
     elif msg.startswith('arty r'):
       report= message.content
@@ -216,6 +252,10 @@ async def on_message(message):
               description='You need to @mention a valid user in your report',
               color=discord.Colour.red())
         await message.channel.send(embed=embed)
+      
+    elif msg.startswith('arty test guild'):
+      keys = db.keys()
+      await message.channel.send(keys)
 
 keep_alive()
 client.run(os.getenv('TOKEN'))
