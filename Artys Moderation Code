@@ -102,7 +102,7 @@ async def on_message(message):
       if name in db:
         return
       else:
-        if message.author.bot:
+        if message.author == message.author.bot:
           return
         else:
           await message.channel.send(random.choice(starter_encouragements))
