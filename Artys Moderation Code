@@ -74,9 +74,17 @@ starter_encouragements = [
 
 @client.event
 async def on_ready():
-    print('We have logged in {0.user}'.format(client))
-    await client.change_presence(activity=discord.Game(name=f"Never Gonna Give You Up! | Helping Out On {len(client.guilds)} servers | arty help"))
-        
+    print("Logged in as {0.user}".format(client))
+    print("-----------------------")
+    status_task.start()
+
+@tasks.loop(seconds=5)
+async def status_task():
+    statuses = ["Never Gonna Give You Up!", f"Helping Out On {len(client.guilds)} servers", "arty help"]
+    await client.change_presence(
+        status=discord.Status.online,
+        activity=discord.Game(random.choice(statuses)),
+    )
   
 @client.event
 async def on_message(message):
