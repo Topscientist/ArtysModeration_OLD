@@ -1,4 +1,4 @@
-##This code is copyrighted under the UK Intellectaul property house, Attempting to re-distribute or use the code for your own purposes without permisiion from the original owner is subject to law enforcement. 
+2##This code is copyrighted under the UK Intellectaul property house, Attempting to re-distribute or use the code for your own purposes without permision from the original owner is subject to law enforcement. 
 
 ##Copyright (c) Artymartin 2021
 
@@ -10,6 +10,7 @@ import requests
 import json
 from replit import db
 from time import sleep
+from website import website
 
 client = discord.Client()
 
@@ -62,7 +63,7 @@ banned_words = [
 cookie_list = ["Congrats! You have won a cookie! 🍪", "No, No cookie for you!"]
 
 sad_words = [
-  "unhappy", "Unhappy", "depressed", "Depressed", "angry", "Angry", "miserable", "Miserable", "depressing", "Depressing"
+  "unhappy", "Unhappy", "depressed", "Depressed", "miserable", "Miserable", "i feel alone", "I feel alone"
 ]
 
 starter_encouragements = [
@@ -101,13 +102,15 @@ async def on_message(message):
         if str(abc) in db:
           return
         else:
+          author = message.author.id
+          writer = message.author.mention
           emoji = '⚠️'
           await message.add_reaction(emoji)
           await message.channel.purge(limit=1)
           embed = discord.Embed(
-              title='🤚Hold Up!🤚',
+              title='Hmmm',
               description=
-                'I do beg your pardon, but that word is **BANNED**. To disable moderation features please type; arty mod false',
+                'That word appears to be banned in this discord server, please watch your language.',
               color=discord.Colour.orange())
           await message.channel.send(embed=embed)
           print('Automoderator> Banned word was deleted')
@@ -396,4 +399,5 @@ async def on_message(message):
         print ('Sudo Error> A User Attempted To Accses A Sudo Only Area And Failed')
         return
 
+website()
 client.run(os.getenv('TOKEN'))
