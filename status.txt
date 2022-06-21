@@ -1,9 +1,5 @@
-Bot Status:
+# REPOSITORY HAS BEEN MOVED!
 
-Current Status: Online
+This repo has been moved to a new home at: https://github.com/Topscientist/ArtysModeration
 
-Previous Downtine:
-Down Last Week for - Updating Packages, A package update was required but the wrong package was requested reulting in a system-wide crash. 
-                     The bot was offline for 2 mins.
-                     
-Expected Downtimes: None
+That repo will recive all of the latest updates and thsi repo will be depreached and no longer updated with the code being removed as of 21/6/22.
